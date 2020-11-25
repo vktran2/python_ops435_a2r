@@ -1,0 +1,57 @@
+Assignment2 - By Victor Tran
+Python Script Name: ur_vktran2.py
+Description
+This python script shall accept and execute various filesnames as command line or optional parameters. In depth information will be given when using the --help option with the script.
+
+The following modules will be used in the script:
+OS -- used to allow use of the OS commands
+SYS  -- will be used to accept command line arguments
+argparse  -- will be used to assist the user on how to use the script, generating help messages and issue errors
+time -- will be used in comparing dates
+
+The main script will begin by setting a2r_vktran2.py.
+Step 1
+Argument parser shall be given consisting of:
+Positional args: F
+optional args: -h --help, -l {user,host} --list{user,host}, -r RHOST --rhost RHOST, -t {daily,weekly,monthly} --type {daily,weekly,monthly}, -u USER --user USER, -v --verbose
+Step 2
+Proper arguments read will determine the function needed to be executed through the use of if statements.
+Step 3
+The function executed will have its result printed.
+
+Functions
+user_list(file)
+* Uses optional arg '-l user' *
+1. Open and read the file given in the cli. 
+2. Extract the list of users and closes the read file.
+3. Output the users in a formatted list.
+
+host_list(file)
+* Uses optional arg '-l host' *
+1. Open and read the file given in the cli.
+2. Extract the list of hosts and closes the read file.
+3. Output the list of hosts in a formatted list.
+
+daily_user(file)
+* Uses optional args '-u user -t daily' *
+1. Open and search the file for information on the specified user.
+2. Extract information about the users usage and on daily date and close the file.
+3. Output in a formatted list of the daily date, usage converted into seconds, and the total amount of usage in seconds.
+
+daily_host(file)
+* Uses optional args '-r host -t daily' *
+1. Open and search the file for information on the specified host.
+2. Extract information about the hosts usage and on daily date and close the file.
+3. Output in a formatted list of the daily date, usage converted into seconds, and the total amount of usage in seconds.
+
+weekly_user(file)
+* Uses optional args '-u user -t weekly' *
+1. Open and search the file for information on the specified user.
+2. Extract information about the users usage and on the week and close the file.
+3. Output in a formatted list of the weekly date, weekly usage added and converted into seconds, and the total amount of usage in seconds. 
+
+weekly_host(file)
+* Uses optional args '-h host -t weekly' *
+1. Open and search the file for information on the specified host.
+2. Extract information about the hosts usage and on the week and close the file.
+3. Output in a formatted list of the weekly date, weekly usage added and converted into seconds, and the total amount of usage in seconds. 
