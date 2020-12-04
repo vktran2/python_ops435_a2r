@@ -7,7 +7,7 @@ The following modules will be used in the script:
 OS -- used to allow use of the OS commands
 SYS  -- will be used to accept command line arguments
 argparse  -- will be used to assist the user on how to use the script, generating help messages and issue errors
-time -- will be used in comparing dates
+datetime, time -- will be used in comparing dates
 
 The main script will begin by setting a2r_vktran2.py.
 Step 1
@@ -20,38 +20,48 @@ Step 3
 The function executed will have its result printed.
 
 Functions
-user_list(file)
+form_dict(file_name)
+1. Open and read the file given by the cli
+2. extract all needed information and close the file
+3. Save needed information in a dictionary
+
+user_list(records, input)
 * Uses optional arg '-l user' *
-1. Open and read the file given in the cli. 
-2. Extract the list of users and closes the read file.
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for a list of users
 3. Output the users in a formatted list.
 
-host_list(file)
+host_list(records, input)
 * Uses optional arg '-l host' *
-1. Open and read the file given in the cli.
-2. Extract the list of hosts and closes the read file.
-3. Output the list of hosts in a formatted list.
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for a list of hosts
+3. Output the hosts in a formatted list.
 
-daily_user(file)
+item_loop(record, records, items)
+1. Get the needed information the dictionary made and the user input
+2. Iterate through the function until the indexes of needed information is found and put them into two lists
+3. Zip the two lists and then return as a list.
+
+daily_user(records, input)
 * Uses optional args '-u user -t daily' *
-1. Open and search the file for information on the specified user.
-2. Extract information about the users usage and on daily date and close the file.
-3. Output in a formatted list of the daily date, usage converted into seconds, and the total amount of usage in seconds.
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for the specified user
+3. Output the user and amount of daily uptime in a formatted list.
 
-daily_host(file)
+daily_host(records, input)
 * Uses optional args '-r host -t daily' *
-1. Open and search the file for information on the specified host.
-2. Extract information about the hosts usage and on daily date and close the file.
-3. Output in a formatted list of the daily date, usage converted into seconds, and the total amount of usage in seconds.
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for the specified host
+3. Output the host and amount of daily uptime in a formatted list.
 
-weekly_user(file)
+weekly_user(records, input)
 * Uses optional args '-u user -t weekly' *
-1. Open and search the file for information on the specified user.
-2. Extract information about the users usage and on the week and close the file.
-3. Output in a formatted list of the weekly date, weekly usage added and converted into seconds, and the total amount of usage in seconds. 
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for the specified user
+3. Output the user and amount of weekly uptime in a formatted list.
 
-weekly_host(file)
+weekly_host(records, input)
 * Uses optional args '-h host -t weekly' *
-1. Open and search the file for information on the specified host.
-2. Extract information about the hosts usage and on the week and close the file.
-3. Output in a formatted list of the weekly date, weekly usage added and converted into seconds, and the total amount of usage in seconds. 
+1. Get the needed information the dictionary made and the user input
+2. Search the dictionary for the specified host
+3. Output the host and amount of weekly uptime in a formatted list.
