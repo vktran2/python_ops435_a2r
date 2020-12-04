@@ -71,8 +71,10 @@ def norm_time(rec):
 	else:
 		# calculate next day string in 'WoD Month Day HH:MM:SS YYYY'
 		new_rec1 = copy.copy(rec)
+		start1 = [rec[4:7],rec[8:10],rec[20:24]]
 		new_rec = copy.copy(rec)
-		t_next = time.mktime(time.strptime(' '.join(new_rec1[4:6]+rec[7:8]),'%b %d %Y'))+86400
+		print(new_rec1[4:6]+rec[7:8])
+		t_next = time.mktime(time.strptime(' '.join(start1),'%b %d %Y'))+86400
 		next_day = time.strftime('%a %b %d %H:%M:%S %Y',time.strptime(time.ctime(t_next))).split()
 		new_rec1[12] = '23:59:59'
 		new_rec1[9] = new_rec1[3]
@@ -83,8 +85,8 @@ def norm_time(rec):
 		new_rec[5] = next_day[2] # Day of Month 01, 02, ...
 		new_rec[6] = next_day[3] # Time HH:MM:SS
 		new_rec[7] = next_day[4] # Year YYYY
-		norm_rec = normalized_rec(new_rec)
-		normalized_recs = copy.copy(norm_rec)
+		normal_rec = norm_rec(new_rec)
+		normalized_recs = copy.copy(normal_rec)
 		normalized_recs.insert(0,new_rec1)  # call normalized_rec function recursive
 	return normalized_recs
 
@@ -112,13 +114,7 @@ def host_list(records, file_list):
 		print(z)
 	return x, y
 
-def daily_user(records, username):
-	'''docstring for this function
-	Get dictionary from the last command
-	Search for the specified user
-	output the date and uptime for the specified user'''
-	x = print('Daily report for user ', username)
-	y = print('=========================================')
+def item_loop(record, records, items):
 	start = -1
 	locations = []
 	dates = []
@@ -128,24 +124,59 @@ def daily_user(records, username):
 
 	while True: #continuously loop
 		try:
-			loc = records['names'].index(username,start+1) # iterate each record looking for given username
+			loc = record.index(items,start+1) # iterate each record looking for given item
 		except ValueError: #break the continuous loop  when there os a value error
 			break
 		else:
 			locations.append(loc) #save the indexes or the username
 			start = loc #resume from last location
 
-	for inx in locations:
-		dates.append(records['first logon'][inx])
-		n = norm_time(str(records['full time'][inx]))
-		print(n)
+		for inx in locations:
+			dates.append(records['first logon'][inx])#append the login times to dates variable
+			n = norm_time(str(records['full time'][inx]))#use the normalized time function to ensure records are same day
 		for a in n:
-			f = datetime.datetime.strptime(a[38:46], hms) - datetime.datetime.strptime(a[11:19], hms)
-			times.append(f.total_seconds())
-		
-	print(dates, '     ', times)
+			f = datetime.datetime.strptime(a[38:46], hms) - datetime.datetime.strptime(a[11:19], hms)# slice the string that we want
+			times.append(f.total_seconds())# append the wanted string to times
+	wow = list(zip(dates, times)) # pair the lists together with zip and turn it back into a list
+	return wow
+
+def daily_user(records, username):
+	'''docstring for this function
+	Get dictionary from the last command
+	Search for the specified user
+	output the date and uptime for the specified user'''
+	x = print('Daily report for user ', username)
+	y = print('=========================================')
+	
+	wow = item_loop(records['names'], records, username)
+	totals = {}
+
+	for key, value in wow:
+		totals[key] = totals.get(key, 0) + value # add the values of similar keys together
+
+	for key, value in totals.items():
+		print(key, '           ', value) # print the keys and values of the dictionary
+
 	return x, y
 
+def daily_host(records, rhost):
+        '''docstring for this function
+        Get dictionary from the last command
+        Search for the specified host
+        output the date and uptime for the specified user'''
+        x = print('Daily report for rhost ', rhost)
+        y = print('=========================================')
+
+        wow = item_loop(records['hosts'], records, rhost)
+        totals = {}
+
+        for key, value in wow:
+                totals[key] = totals.get(key, 0) + value # add the values of similar keys together
+
+        for key, value in totals.items():
+                print(key, '           ', value) # print the keys and values of the dictionary
+
+        return x, y
 
 
 if __name__ == '__main__':
@@ -161,6 +192,7 @@ if __name__ == '__main__':
 
 	file_list = args.files
 	user = args.user
+	host = args.rhost
 
 	for file_name in file_list: # create for loop to create a dictionary for all files in arg.files
 		y = form_dict(file_name)
@@ -173,11 +205,16 @@ if __name__ == '__main__':
 		if (args.listing == 'user'):
 			user_list(y,file_list)
 		if args.user:
-			print('usage report for user:', user)
-			daily_user(y, user)
+			if (args.type == 'daily'):
+				daily_user(y, user)
+			elif (args.type == 'weekly'):
+				print('this has not been made yet')
+			else:
+				print('specify the report type "-t" or "--type"')
 		if args.rhost:
-			print('usage report for remote host:',args.rhost)
-		if args.type:
-			print('usage report type:',args.type)
-
-
+			if(args.type == 'daily'):
+				daily_host(y,host)				
+			elif(args.type == 'weekly'):
+				print('this has not been created yet')
+			else:
+				print('Specify the report type "-t" or "--type"')
