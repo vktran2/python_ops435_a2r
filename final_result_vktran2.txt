@@ -1,0 +1,108 @@
+Test data file: a2_final_data
+rchan    pts/9        10.40.105.99     Tue Feb 13 16:53:42 2018 - Tue Feb 13 16:57:02 2018  (00:09)    
+rchan    pts/8        10.40.105.99     Tue Feb 13 19:28:43 2018 - Tue Feb 13 20:28:31 2018  (00:00)    
+rchan    pts/2        10.40.105.99     Tue Feb 14 16:22:00 2018 - Tue Feb 14 16:45:00 2018  (00:00)    
+asmith   pts/2        10.40.105.130    Tue Feb 13 16:19:29 2018 - Tue Feb 13 16:22:00 2018  (00:00)    
+rchan    pts/4        10.40.105.99     Tue Feb 15 16:17:21 2018 - Tue Feb 15 16:30:10 2018  (00:00)    
+asmith   pts/13       10.40.105.130    Tue Feb 13 16:07:52 2018 - Tue Feb 13 16:45:52 2018  (00:00)    
+asmith   pts/11       10.40.105.130    Tue Feb 13 14:07:43 2018 - Tue Feb 13 16:07:43 2018  (00:00)
+rchan    pts/9        10.40.105.99     Tue Jun 12 16:53:42 2018 - Tue Jun 12 16:57:02 2018  (00:00)    
+rchan    pts/8        10.40.105.99     Tue Jun 12 19:28:43 2018 - Tue Jun 12 20:28:33 2018  (00:00)    
+rchan    pts/2        10.40.105.99     Tue Jun 12 10:22:00 2018 - Tue Jun 12 10:45:00 2018  (00:00)    
+asmith   pts/2        10.40.105.130    Tue Jun 12 12:19:29 2018 - Tue Jun 19 16:22:00 2018  (99:99)    
+rchan    pts/4        10.40.105.99     Tue Jun 12 20:17:20 2018 - Tue Jun 19 16:30:10 2018  (99:99)    
+asmith   pts/13       10.40.105.130    Tue Jun 12 18:07:52 2018 - Tue Jun 19 16:45:52 2018  (99:99)   
+usage: ur.py [-h] [-l {user,host}] [-r RHOST] [-t {daily,weekly}] [-u USER]
+             [-v]
+             F [F ...]
+
+Retrieve specified information from files
+
+positional arguments:
+  F                     list of files to be processed
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l {user,host}, --listing {user,host}
+                        generate user name or remote host IP from the given
+                        files
+  -r RHOST, --rhost RHOST
+                        usage report for the given remote host IP
+  -t {daily,weekly}, --type {daily,weekly}
+                        type of report: daily or weekly
+  -u USER, --user USER  usage report for the given user name
+  -v, --verbose         turn on output verbosity
+User list for file(s) ['a2_final_data']
+=========================================
+rchan
+asmith
+Host list for file(s) ['a2_final_data']
+=========================================
+10.40.105.99
+10.40.105.130
+Daily report for user  rchan
+=========================================
+2018 2 13             193674
+2018 2 14             176388
+2018 2 15             172798
+2018 6 12             59410
+weekly user function has not been created yet
+Daily report for rhost  10.40.105.99
+=========================================
+2018 2 13             193674
+2018 2 14             176388
+2018 2 15             172798
+2018 6 12             59410
+weekly host function has not been created yet
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Generating list for user
+User list for file(s) ['a2_final_data']
+=========================================
+rchan
+asmith
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Generating list for host
+Host list for file(s) ['a2_final_data']
+=========================================
+10.40.105.99
+10.40.105.130
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Usage report for user:  asmith
+usage report type:  daily
+Daily report for user  asmith
+=========================================
+2018 2 13             650102
+2018 6 12             259197
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Usage report for user:  asmith
+usage report type:  weekly
+weekly user function has not been created yet
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Usage report for user:  None
+usage report type:  daily
+Daily report for rhost  10.40.105.130
+=========================================
+2018 2 13             650102
+2018 6 12             259197
+Files to be processed: ['a2_final_data']
+Type of args for files <class 'list'>
+Processing usage report for the following:
+Reading login/logout record files:  ['a2_final_data']
+Usage report for user:  None
+usage report type:  weekly
+weekly host function has not been created yet
