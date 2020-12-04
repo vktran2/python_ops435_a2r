@@ -26,7 +26,6 @@ def form_dict(file_name):
 	f = open(file_name, 'r')
 	lists = list(f)
 	f.close
-
 	n_list = []
 	p_list = []
 	h_list = []
@@ -70,22 +69,23 @@ def norm_time(rec):
 		return norm_rec
 	else:
 		# calculate next day string in 'WoD Month Day HH:MM:SS YYYY'
-		new_rec1 = copy.copy(rec)
+		new_rec1 = copy.copy(rec).split()
 		start1 = [rec[4:7],rec[8:10],rec[20:24]]
-		new_rec = copy.copy(rec)
-		print(new_rec1[4:6]+rec[7:8])
+		new_rec = copy.copy(rec).split()
 		t_next = time.mktime(time.strptime(' '.join(start1),'%b %d %Y'))+86400
 		next_day = time.strftime('%a %b %d %H:%M:%S %Y',time.strptime(time.ctime(t_next))).split()
-		new_rec1[12] = '23:59:59'
-		new_rec1[9] = new_rec1[3]
-		new_rec1[10] = new_rec1[4]
-		new_rec1[11] = new_rec1[5]
-		new_rec[3] = next_day[0] # Day of week Sun, Mon, Tue...
-		new_rec[4] = next_day[1] # Month Jan, Feb, Mar, ...
-		new_rec[5] = next_day[2] # Day of Month 01, 02, ...
-		new_rec[6] = next_day[3] # Time HH:MM:SS
-		new_rec[7] = next_day[4] # Year YYYY
-		normal_rec = norm_rec(new_rec)
+		new_rec1[9] = '23:59:59' 
+		new_rec1[6] = new_rec1[0]
+		new_rec1[7] = new_rec1[1]
+		new_rec1[8] = new_rec1[2]
+		new_rec[0] = next_day[0] # Day of week Sun, Mon, Tue...
+		new_rec[1] = next_day[1] # Month Jan, Feb, Mar, ...
+		new_rec[2] = next_day[2] # Day of Month 01, 02, ...
+		new_rec[3] = next_day[3] # Time HH:MM:SS
+		new_rec[4] = next_day[4] # Year YYYY
+		new_rec1 = ' '.join(new_rec1)
+		new_rec = ' '.join(new_rec)
+		normal_rec = norm_time(new_rec)
 		normalized_recs = copy.copy(normal_rec)
 		normalized_recs.insert(0,new_rec1)  # call normalized_rec function recursive
 	return normalized_recs
@@ -95,24 +95,24 @@ def user_list(records, file_list):
 	get the dictionary from the last command
 	filter out unwanted records
 	format and print output '''
-	x = print("User list for file(s)", file_list)
-	y = print('=========================================')
+	print("User list for file(s)", file_list)
+	print('=========================================')
 	newList = list(dict.fromkeys(records['names'])) #turn list into dictionary and back to remove duplicate names
 	for z in newList:
 		print(z)
-	return x,y
+	return
 
 def host_list(records, file_list):
 	'''docstring for this function
 	get the dictionary from the last command
 	filter out unwanted records
 	format and print output'''
-	x = print("Host list for file(s)", file_list)
-	y = print('=========================================')
+	print("Host list for file(s)", file_list)
+	print('=========================================')
 	newList = list(dict.fromkeys(records['hosts'])) # turn list into dictionary and back to remove duplicate hosts
 	for z in newList:
 		print(z)
-	return x, y
+	return 
 
 def item_loop(record, records, items):
 	start = -1
@@ -145,8 +145,8 @@ def daily_user(records, username):
 	Get dictionary from the last command
 	Search for the specified user
 	output the date and uptime for the specified user'''
-	x = print('Daily report for user ', username)
-	y = print('=========================================')
+	print('Daily report for user ', username)
+	print('=========================================')
 	
 	wow = item_loop(records['names'], records, username)
 	totals = {}
@@ -155,17 +155,17 @@ def daily_user(records, username):
 		totals[key] = totals.get(key, 0) + value # add the values of similar keys together
 
 	for key, value in totals.items():
-		print(key, '           ', value) # print the keys and values of the dictionary
+		print(key, '           ', int(value)) # print the keys and values of the dictionary, made into int to remove trailing zeros
 
-	return x, y
+	return 
 
 def daily_host(records, rhost):
         '''docstring for this function
         Get dictionary from the last command
         Search for the specified host
         output the date and uptime for the specified user'''
-        x = print('Daily report for rhost ', rhost)
-        y = print('=========================================')
+        print('Daily report for rhost ', rhost)
+        print('=========================================')
 
         wow = item_loop(records['hosts'], records, rhost)
         totals = {}
@@ -174,9 +174,9 @@ def daily_host(records, rhost):
                 totals[key] = totals.get(key, 0) + value # add the values of similar keys together
 
         for key, value in totals.items():
-                print(key, '           ', value) # print the keys and values of the dictionary
+                print(key, '           ', int(value)) # print the keys and values of the dictionary, made into int to remove trailing zeros
 
-        return x, y
+        return 
 
 
 if __name__ == '__main__':
@@ -200,6 +200,18 @@ if __name__ == '__main__':
 		if args.verbose:
 			print('Files to be processed:',file_list)
 			print('Type of args for files',type(file_list))
+			print('Processing usage report for the following:')
+			print('Reading login/logout record files: ', file_list)
+			if (args.listing == 'host'):
+				print('Generating list for host')
+			if (args.listing == 'user'):
+				print('Generating list for user')
+			if (args.type == 'daily'):
+				print('Usage report for user: ', user)
+				print('usage report type: ', args.type)
+			if (args.type == 'weekly'):
+				print('Usage report for user: ', user)
+				print('usage report type: ', args.type)
 		if (args.listing == 'host'):
 			host_list(y,file_list)
 		if (args.listing == 'user'):
@@ -208,13 +220,14 @@ if __name__ == '__main__':
 			if (args.type == 'daily'):
 				daily_user(y, user)
 			elif (args.type == 'weekly'):
-				print('this has not been made yet')
+				print('weekly user function has not been created yet')
 			else:
 				print('specify the report type "-t" or "--type"')
 		if args.rhost:
 			if(args.type == 'daily'):
 				daily_host(y,host)				
 			elif(args.type == 'weekly'):
-				print('this has not been created yet')
+				print('weekly host function has not been created yet')
 			else:
 				print('Specify the report type "-t" or "--type"')
+
